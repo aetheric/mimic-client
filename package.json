@@ -20,6 +20,7 @@
     "gulp": "^3.8.10",
     "gulp-cached": "^1.0.1",
     "gulp-concat": "^2.4.3",
+    "gulp-git": "^0.5.5",
     "gulp-jsdoc": "^0.1.4",
     "gulp-mocha": "^2.0.0",
     "gulp-remember": "^0.3.0",

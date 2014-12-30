@@ -9,6 +9,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var mocha = require('gulp-mocha');
 var gutil = require('gulp-util');
 var jsdoc = require('gulp-jsdoc');
+var git = require('gulp-git');
 
 var PATH_SOURCE = 'src/main/**';
 var PATH_TEST = 'src/test/**';
