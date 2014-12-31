@@ -1,21 +1,46 @@
 (function(window) {
 
-	var session = window.sessionStorage,
+	var KEY_TARGET = 'mimic_target';
+
+	var mimic = window.mimic = {},
+		session = window.sessionStorage,
 		connection = null,
 		listeners = {},
 		promises = {};
+
+	function connect(force) {
+
+		if (connection) {
+			if (!force) {
+				return;
+			}
+
+			connection.close();
+		}
+
+		var target = session[KEY_TARGET];
+		connection = new WebSocket(target);
+	}
 
 	window.addEventListener("storage", function(event) {
 		var key = event.key;
 		var val_old = event.oldValue;
 		var val_new = event.newValue;
-		var url = event.url;
 
-		// TODO: Check event is valid for session.
-		// TODO: Send update over connection.
+		if (val_new === val_old) {
+			// No changes.
+			return;
+		}
+
+		if (key === KEY_TARGET) {
+			connect(true);
+			return;
+		}
+
+		connection.send('{"key":"' + key + '","value":{"old":"' + val_old + '","new":"' + val_new + '"}}');
 		// TODO: Set relevant promises.
 
-		var value = mimic.getItem(event.key);
+		var value = mimic.getItem(key);
 
 		for (var listenerList in listeners) {
 
@@ -31,20 +56,9 @@
 
 	}, false);
 
-	// This is the connection function. Takes a websocket url.
-	var mimic = window.mimic = function(target) {
-		if (connection) return;
-
-		//TODO: Connect to websocket host.
-
-		//on successful connection...
-		session['mimic_target'] = target;
-
-	};
-
 	// If the page has been refreshed, re-establish the last connection.
-	if (session['mimic_target']) {
-		mimic(session['mimic_target']);
+	if (session[KEY_TARGET]) {
+		connect(false);
 	}
 
 	/**
