@@ -34,7 +34,7 @@ var CONF_DOCS = {
 
 var CONF_JSDOC = {
 	plugins: [
-		'plugins/asciidoc'
+		'plugins/markdown'
 	]
 };
 
@@ -76,8 +76,9 @@ gulp.task(TASK_BUILD + '-watch', function() {
 
 gulp.task(TASK_DOCS, function() {
 	return gulp
-		.src([ PATH_SOURCE, 'README.adoc' ])
+		.src([ PATH_SOURCE + '.js', 'README.md' ])
 		.pipe(jsdoc.parser(CONF_JSDOC))
+		.pipe(gulp.dest(PATH_DOCS))
 		.pipe(jsdoc.generator(PATH_DOCS));
 });
 

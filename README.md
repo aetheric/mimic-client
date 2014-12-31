@@ -1,6 +1,4 @@
-Mimic : Client
-==============
-Peter Cummuskey <peterc@aetheric.co.nz>
+# Mimic : Client
 
 This is the javascript client for mimic that creates a connection to the desired host, and maintains synchronisation
 between them. When in doubt, the server always wins. In addition, the framework is _very_ oppinionated, so it doesn't
