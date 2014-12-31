@@ -20,6 +20,14 @@
 
 		var target = session[KEY_TARGET];
 		connection = new WebSocket(target);
+
+		connection.onmessage = function(event) {
+			var data = event && event.data && event.data.split('|');
+			if (data && data.length === 4) {
+				mimic.setItem(data[1], data[2]);
+			}
+		};
+
 	}
 
 	window.addEventListener("storage", function(event) {
@@ -37,8 +45,8 @@
 			return;
 		}
 
-		connection.send('{"key":"' + key + '","value":{"old":"' + val_old + '","new":"' + val_new + '"}}');
-		// TODO: Set relevant promises.
+		var time = Date.now();
+		connection.send(time + '|' + key + '|' + val_new + '|' + val_old);
 
 		var value = mimic.getItem(key);
 
